@@ -1,0 +1,19 @@
+npm - node package manager (install node.js to get this npm)
+
+node.js is a runtime env that allows js to run on the server
+
+middleware
+logging
+parsing json
+cors - the origins (frontend sites that can send requests to our backend)
+cors is a middleware package
+dotenv - node.js module
+config folder
+utilis folder
+dotenv 
+
+mongoose or just mongodb?
+
+
+
+
