@@ -1,17 +1,21 @@
+// src/app.js
 import express from 'express';
-import cors from 'cors'; // Optional, add if you want to enable CORS
+import cors from 'cors';
+import config from './config/config.js';
+
+import authRoutes from './routes/auth.js';
+import userRoutes from './routes/user.js';
+import commentRoutes from './routes/comments.js';
+import blogRoutes from './routes/blogs.js';
 
 const app = express();
 
-// Enable CORS middleware (optional)
-app.use(cors());
-
-// Middleware to parse JSON payloads
+app.use(cors({ origin: config.frontend_url, credentials: true }));
 app.use(express.json());
 
-// Define a basic route
-app.get('/', (req, res) => {
-  res.send('Hello from Node.js backend!');
-});
+app.use('/auth', authRoutes); // /auth/register, /auth/login
+app.use('/user', userRoutes); // /user/me (protected)
+app.use('/comments', commentRoutes);
+app.use('/blogs', blogRoutes);
 
 export default app;
