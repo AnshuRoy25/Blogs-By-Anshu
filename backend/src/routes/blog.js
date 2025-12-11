@@ -5,18 +5,30 @@ import Blog from '../models/blog.js';
 
 const router = express.Router();
 
-// GET /blogs → All published blogs (PUBLIC)
+// GET /blogs → All published blogs with optional search (PUBLIC)
 router.get('/', async (req, res) => {
   try {
-    const { page = 1, limit = 10 } = req.query;
+    const { page = 1, limit = 10, search } = req.query;
     
-    const blogs = await Blog.find({ isPublished: true })
-      .sort({ createdAt: -1 })  // Newest first
+    let query = { isPublished: true };
+
+    if (search) {
+      query = {
+        isPublished: true,
+        $or: [
+          { title: { $regex: search, $options: 'i' } },
+          { description: { $regex: search, $options: 'i' } },
+        ],
+      };
+    }
+
+    const blogs = await Blog.find(query)
+      .sort({ createdAt: -1 })
       .limit(limit * 1)
       .skip((page - 1) * limit)
-      .select('title description coverImageURL likes createdAt');  // Don't send full body
+      .select('title description coverImageURL likes createdAt');
 
-    const total = await Blog.countDocuments({ isPublished: true });
+    const total = await Blog.countDocuments(query);
 
     res.json({
       blogs,
@@ -30,6 +42,7 @@ router.get('/', async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 });
+
 
 // GET /blogs/:id → Single blog (PUBLIC)
 router.get('/:id', async (req, res) => {

@@ -26,7 +26,7 @@ const blogSchema = new mongoose.Schema(
 
     coverImageURL: {
       type: String,
-      required: false,
+      required: [true, 'Please provide a cover image URL'],  // ← CHANGED
     },
 
     likes: {

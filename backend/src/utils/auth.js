@@ -6,11 +6,13 @@ export function createTokenForUser(user) {
   const payload = {
     userId: user._id,
     username: user.username,
+    role: user.role,  // Add role to JWT
   };
 
   const token = jwt.sign(payload, config.jwtSecret, {
-    expiresIn: config.jwtExpire, // e.g. '7d'
+    expiresIn: config.jwtExpire,
   });
 
   return token;
 }
+
