@@ -1,38 +1,45 @@
 // src/seedBlogs.js
 import './config/config.js';
-import connectDB from './utils/db.js';
+import mongoose from 'mongoose';
 import Blog from './models/blog.js';
+import connectDB from './utils/db.js';
 
-async function seed() {
+async function seedBlogs() {
   try {
     await connectDB();
 
+    // Clear existing blogs (optional)
+    await Blog.deleteMany({});
+
+    const now = new Date();
+
     const blogs = [
       {
-        title: 'My first test blog',
-        description: 'Short description of the first blog',
-        body: 'This is the full content of the first blog.',
-        coverImageURL: 'https://via.placeholder.com/800x400?text=First+Blog',
-        likes: 0,
+        title: 'Sample Published Blog',
+        description: 'This is a short description for a published blog.',
+        body: 'This is the full content of the published blog.',
+        coverImageURL: 'https://via.placeholder.com/800x400?text=Published+Blog',
         isPublished: true,
+        publishedAt: now,
       },
       {
-        title: 'Second sample blog',
-        description: 'Another test blog entry',
-        body: 'This is the content of the second blog post.',
-        coverImageURL: 'https://via.placeholder.com/800x400?text=Second+Blog',
-        likes: 3,
-        isPublished: true,
+        title: 'Sample Draft Blog',
+        description: 'This is a short description for a draft blog.',
+        body: 'This is the full content of the draft blog.',
+        coverImageURL: 'https://via.placeholder.com/800x400?text=Draft+Blog',
+        isPublished: false,
+        publishedAt: null,
       },
     ];
 
     const created = await Blog.insertMany(blogs);
     console.log(`Inserted ${created.length} blogs`);
   } catch (err) {
-    console.error('Seeding failed:', err.message);
+    console.error('Seeding blogs failed:', err.message);
   } finally {
+    await mongoose.connection.close();
     process.exit(0);
   }
 }
 
-seed();
+seedBlogs();

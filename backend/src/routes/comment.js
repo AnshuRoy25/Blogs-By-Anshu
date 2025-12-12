@@ -30,9 +30,6 @@ router.post('/', verifyToken, async (req, res) => {
 });
 
 
-
-// src/routes/comment.js
-
 // GET /comments/:blogId  → all top-level comments + admin replies (PUBLIC)
 router.get('/:blogId', async (req, res) => {
   try {
