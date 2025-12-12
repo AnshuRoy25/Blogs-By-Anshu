@@ -28,6 +28,19 @@ const commentSchema = new mongoose.Schema(
       ref: 'Blog',
       required: [true, 'Comment must belong to a blog'],
     },
+
+    // null = top‑level comment, otherwise reply to another comment
+    parentCommentId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Comment',
+      default: null,
+    },
+
+    // true if this comment is an admin reply
+    isAdminReply: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

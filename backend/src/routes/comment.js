@@ -5,7 +5,8 @@ import Comment from '../models/comment.js';
 
 const router = express.Router();
 
-// POST /comments  → add a new comment (USERS ONLY)
+
+// POST /comments  → add a new TOP-LEVEL comment (USERS ONLY)
 router.post('/', verifyToken, async (req, res) => {
   try {
     const { content, blogId } = req.body;
@@ -17,7 +18,9 @@ router.post('/', verifyToken, async (req, res) => {
     const comment = await Comment.create({
       content,
       blogId,
-      userId: req.user.id, // from JWT (logged-in user only)
+      userId: req.user.id,   // logged-in user
+      parentCommentId: null, // top-level
+      isAdminReply: false,
     });
 
     res.status(201).json({ comment });
@@ -26,18 +29,43 @@ router.post('/', verifyToken, async (req, res) => {
   }
 });
 
-// GET /comments/:blogId  → all comments for a blog (PUBLIC)
+
+
+// src/routes/comment.js
+
+// GET /comments/:blogId  → all top-level comments + admin replies (PUBLIC)
 router.get('/:blogId', async (req, res) => {
   try {
-    const comments = await Comment.find({ blogId: req.params.blogId })
+    // 1) Fetch top-level comments for this blog
+    const comments = await Comment.find({
+      blogId: req.params.blogId,
+      parentCommentId: null,
+    })
       .populate('userId', 'username')
       .sort({ createdAt: -1 });
 
-    res.json({ comments });
+    // 2) For each top-level comment, fetch its replies
+    const commentsWithReplies = await Promise.all(
+      comments.map(async (comment) => {
+        const replies = await Comment.find({
+          parentCommentId: comment._id,
+        })
+          .populate('userId', 'username')
+          .sort({ createdAt: 1 });
+
+        return {
+          ...comment.toObject(),
+          replies,
+        };
+      })
+    );
+
+    res.json({ comments: commentsWithReplies });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 });
+
 
 // PUT /comments/:id/like  → like a comment (USERS ONLY)
 router.put('/:id/like', verifyToken, async (req, res) => {

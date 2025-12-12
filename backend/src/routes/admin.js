@@ -7,49 +7,88 @@ import About from '../models/about.js';
 
 const router = express.Router();
 
-// POST /admin/blogs - Create blog (ADMIN ONLY)
+// POST /admin/blogs - Create new blog (can be DRAFT or PUBLISHED)
 router.post('/blogs', verifyAdmin, async (req, res) => {
   try {
-    const { title, description, body, coverImageURL } = req.body;
+    const { title, description, body, coverImageURL, isPublished } = req.body;
 
     if (!title || !body || !coverImageURL) {
-      return res.status(400).json({ error: 'title, body, and coverImageURL are required' });
+      return res.status(400).json({
+        error: 'title, body, and coverImageURL are required',
+      });
     }
+
+    // Decide publish time based on isPublished flag
+    // - If isPublished === true  → set publishedAt to now
+    // - If isPublished === false → keep publishedAt null (draft)
+    const publishedAt = isPublished ? new Date() : null;
 
     const blog = await Blog.create({
       title,
       description,
       body,
       coverImageURL,
-      userId: req.user.id,  // Track which admin created it
-      isPublished: true,
+      isPublished: isPublished || false, // default to draft if not sent
+      publishedAt,
     });
 
-    res.status(201).json({ blog });
+    return res.status(201).json({
+      message: isPublished ? 'Blog published' : 'Draft saved',
+      blog,
+    });
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    return res.status(400).json({ error: err.message });
   }
 });
 
 
-// PUT /admin/blogs/:id - Edit blog (ADMIN ONLY)
+
+// PUT /admin/blogs/:id - Edit blog (draft or published)
 router.put('/blogs/:id', verifyAdmin, async (req, res) => {
   try {
     const { title, description, body, coverImageURL, isPublished } = req.body;
 
-    const blog = await Blog.findByIdAndUpdate(
+    // Find current blog to know previous state
+    const currentBlog = await Blog.findById(req.params.id);
+    if (!currentBlog) {
+      return res.status(404).json({ error: 'Blog not found' });
+    }
+
+    // Decide new publishedAt based on transition
+    let publishedAt = currentBlog.publishedAt;
+
+    // draft -> published
+    if (isPublished === true && currentBlog.isPublished === false) {
+      publishedAt = new Date();
+    }
+
+    // published -> draft
+    if (isPublished === false && currentBlog.isPublished === true) {
+      publishedAt = null;
+    }
+
+    const updated = await Blog.findByIdAndUpdate(
       req.params.id,
-      { title, description, body, coverImageURL, isPublished },
+      {
+        title,
+        description,
+        body,
+        coverImageURL,
+        isPublished,
+        publishedAt,
+      },
       { new: true }
     );
 
-    if (!blog) return res.status(404).json({ error: 'Blog not found' });
-
-    res.json({ blog });
+    return res.json({
+      message: 'Blog updated successfully',
+      blog: updated,
+    });
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    return res.status(400).json({ error: err.message });
   }
 });
+
 
 
 // DELETE /admin/blogs/:id - Delete blog (ADMIN ONLY)
@@ -98,6 +137,49 @@ router.put('/about', verifyAdmin, async (req, res) => {
     }
 
     res.json({ about });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// GET /admin/drafts - Get all DRAFT blogs (ADMIN ONLY)
+router.get('/drafts', verifyAdmin, async (req, res) => {
+  try {
+    const drafts = await Blog.find({ isPublished: false })
+      .sort({ updatedAt: -1 })
+      .select('title description coverImageURL createdAt updatedAt');
+
+    res.json({ drafts });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// POST /admin/comments/:commentId/reply  → Admin reply to a user comment
+router.post('/comments/:commentId/reply', verifyAdmin, async (req, res) => {
+  try {
+    const { content } = req.body;
+    const { commentId } = req.params;
+
+    if (!content) {
+      return res.status(400).json({ error: 'content is required' });
+    }
+
+    // Find the parent comment
+    const parentComment = await Comment.findById(commentId);
+    if (!parentComment) {
+      return res.status(404).json({ error: 'Parent comment not found' });
+    }
+
+    const reply = await Comment.create({
+      content,
+      blogId: parentComment.blogId,  // same blog as parent
+      userId: req.user.id,          // admin id from verifyAdmin
+      parentCommentId: commentId,   // link to parent
+      isAdminReply: true,
+    });
+
+    res.status(201).json({ reply });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }

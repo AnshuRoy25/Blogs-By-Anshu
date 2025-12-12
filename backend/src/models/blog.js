@@ -35,9 +35,14 @@ const blogSchema = new mongoose.Schema(
       min: 0,
     },
 
+    publishedAt: {
+      type: Date,
+      default: null,
+    },
+
     isPublished: {
       type: Boolean,
-      default: true,
+      default: false,   // better default for your draft/publish flow
     },
   },
   { timestamps: true }
