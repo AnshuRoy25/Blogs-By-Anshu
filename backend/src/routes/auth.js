@@ -23,8 +23,13 @@ router.post('/register', async (req, res) => {
     res.status(201).json({
       message: 'Registered & logged in',
       token,
-      user: { id: user._id, username: user.username },
+      user: {
+        id: user._id,
+        username: user.username,
+        role: user.role,       // ← add this line
+      },
     });
+
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -50,8 +55,13 @@ router.post('/login', async (req, res) => {
     res.json({
       message: 'Login successful',
       token,
-      user: { id: user._id, username: user.username },
+      user: {
+        id: user._id,
+        username: user.username,
+        role: user.role,       // ← add this line
+      },
     });
+
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
