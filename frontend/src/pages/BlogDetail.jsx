@@ -11,7 +11,7 @@ const API_BASE_URL =
 
 function BlogDetail() {
   const { id } = useParams(); // blog id from URL
-  const { isAuthenticated, isAdmin, user } = useAuth();
+  const { isAuthenticated, isAdmin, user, token } = useAuth(); // ⬅ added token
 
   const [blog, setBlog] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -44,7 +44,35 @@ function BlogDetail() {
   }, [id]);
 
   const handleLike = async () => {
-    // optional: wire to PUT /blogs/:id/like later
+    if (!isAuthenticated) {
+      alert("You must be logged in to like this blog.");
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/blogs/${id}/like`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token ? `Bearer ${token}` : "",
+        },
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        // assume backend returns updated blog object with new likes
+        setBlog((prev) => ({
+          ...prev,
+          likes: data.blog?.likes ?? prev.likes,
+        }));
+      } else {
+        alert(data.error || "Failed to like blog");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Network error while liking blog");
+    }
   };
 
   const handleShare = () => {

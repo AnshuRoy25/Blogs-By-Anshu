@@ -9,7 +9,7 @@ import { useAuth } from "../context/AuthContext";
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 function Home() {
-  const { isAdmin } = useAuth();
+  const { isAdmin, token } = useAuth();
   const [blogs, setBlogs] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
@@ -63,35 +63,35 @@ function Home() {
     };
 
 
-  const handleDeleteBlog = async (blogId) => {
-    const ok = window.confirm("Delete this blog?");
-    if (!ok) return;
+    const handleDeleteBlog = async (blogId) => {
+        const ok = window.confirm("Delete this blog?");
+        if (!ok) return;
 
-    const token = localStorage.getItem("token");
-    if (!token) {
-      alert("You are not logged in as admin.");
-      return;
-    }
+        if (!token) {
+        alert("You are not logged in as admin.");
+        return;
+        }
 
-    try {
-      const res = await fetch(`${API_BASE_URL}/admin/blogs/${blogId}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data = await res.json();
+        try {
+        const res = await fetch(`${API_BASE_URL}/admin/blogs/${blogId}`, {
+            method: "DELETE",
+            headers: {
+            Authorization: `Bearer ${token}`,
+            },
+        });
+        const data = await res.json();
 
-      if (res.ok) {
-        setBlogs((prev) => prev.filter((b) => b._id !== blogId));
-      } else {
-        alert(data.error || "Failed to delete blog");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Network error while deleting blog");
-    }
-  };
+        if (res.ok) {
+            setBlogs((prev) => prev.filter((b) => b._id !== blogId));
+        } else {
+            alert(data.error || "Failed to delete blog");
+        }
+        } catch (err) {
+        console.error(err);
+        alert("Network error while deleting blog");
+        }
+    };
+
 
   return (
     <div className="home-container">

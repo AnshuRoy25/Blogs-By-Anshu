@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/register.css";
+import { useAuth } from "../context/AuthContext";
+
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 function Register() {
+  const { login } = useAuth(); 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -45,11 +48,8 @@ function Register() {
       const data = await response.json();
 
       if (response.ok) {
-        // Success: save token or redirect to login
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
-
-        // Redirect to home or login
+        // Store auth in context
+        login(data.token, data.user);
         navigate("/");
       } else {
         // Error from server (username exists, etc)
