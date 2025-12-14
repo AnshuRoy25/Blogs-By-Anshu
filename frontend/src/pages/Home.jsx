@@ -2,11 +2,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/home.css";
-import BlogCard from "./components/BlogCard.jsx";
-import SearchBar from "./components/SearchBar.jsx";
+import BlogCard from "../components/BlogCard";
+import SearchBar from "../components/SearchBar";
 import { useAuth } from "../context/AuthContext";
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+import { API_BASE_URL } from "../config/api";
 
 function Home() {
   const { isAdmin, token } = useAuth();

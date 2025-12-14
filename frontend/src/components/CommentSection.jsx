@@ -1,11 +1,9 @@
 // src/components/CommentSection.jsx
 import React, { useEffect, useState } from "react";
-import CommentItem from "../CommentItem";
+import CommentItem from "./CommentItem";
 import CommentInputBar from "./CommentInputBar";
 import { useAuth } from "../context/AuthContext";
-
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:5000";
+import { API_BASE_URL } from "../config/api";
 
 function CommentSection({ blogId, initialComments = [] }) {
   const { isAuthenticated, isAdmin, token } = useAuth();

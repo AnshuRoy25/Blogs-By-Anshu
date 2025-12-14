@@ -5,9 +5,7 @@ import "../styles/blogdetail.css";
 import BlogContent from "../components/BlogContent";
 import CommentSection from "../components/CommentSection";
 import { useAuth } from "../context/AuthContext";
-
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:5000";
+import { API_BASE_URL } from "../config/api";
 
 function BlogDetail() {
   const { id } = useParams(); // blog id from URL

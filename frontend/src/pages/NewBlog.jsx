@@ -3,8 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BlogForm from "../components/BlogForm";
 import { useAuth } from "../context/AuthContext"; // adjust path if needed
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+import { API_BASE_URL } from "../config/api";
 
 function NewBlog() {
   const navigate = useNavigate();

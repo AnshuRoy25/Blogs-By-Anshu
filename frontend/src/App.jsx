@@ -3,9 +3,10 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 
-import Sidebar from "../components/Sidebar";
 
-import Home from "../pages/Home";
+import Sidebar from "./components/Sidebar";
+
+import Home from "./pages/Home";
 import About from "./pages/About";
 import BlogDetail from "./pages/BlogDetail";
 import Login from "./pages/Login";
@@ -13,6 +14,7 @@ import Register from "./pages/Register";
 import NewBlog from "./pages/NewBlog";
 import Drafts from "./pages/Drafts";
 import EditBlog from "./pages/EditBlog";
+
 
 // If you have AuthProvider, wrap <AppContent /> with it in main.jsx
 function App() {
