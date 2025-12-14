@@ -13,10 +13,12 @@ const blogSchema = new mongoose.Schema(
 
     description: {
       type: String,
-      required: false,
+      required: [true, 'Please provide a description'],  // Must be provided
       trim: true,
-      maxlength: 500,
+      minlength: 5,      // At least 5 chars
+      maxlength: 500,    // At most 500 chars
     },
+
 
     body: {
       type: String,
@@ -26,7 +28,11 @@ const blogSchema = new mongoose.Schema(
 
     coverImageURL: {
       type: String,
-      required: [true, 'Please provide a cover image URL'],  // ← CHANGED
+      required: [true, 'Please provide a cover image URL'],
+      match: [
+        /^https?:\/\/.+/,
+        'Please provide a valid URL starting with http:// or https://'
+      ],
     },
 
     likes: {

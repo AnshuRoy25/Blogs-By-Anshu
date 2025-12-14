@@ -112,6 +112,18 @@ router.get('/drafts', verifyAdmin, async (req, res) => {
   }
 });
 
+
+// GET /admin/blogs/:id - fetch any blog (draft or published)
+router.get('/blogs/:id', verifyAdmin, async (req, res) => {
+  try {
+    const blog = await Blog.findById(req.params.id);  // No isPublished check
+    if (!blog) return res.status(404).json({ error: 'Blog not found' });
+    res.json({ blog });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
 // ============================================
 // COMMENT ROUTES
 // ============================================
@@ -145,18 +157,24 @@ router.post('/comments/:commentId/reply', verifyAdmin, async (req, res) => {
   }
 });
 
-// DELETE /admin/comments/:id - Delete comment
+// DELETE /admin/comments/:id - Delete comment and its replies
 router.delete('/comments/:id', verifyAdmin, async (req, res) => {
   try {
-    const comment = await Comment.findByIdAndDelete(req.params.id);
-
+    const comment = await Comment.findById(req.params.id);
     if (!comment) return res.status(404).json({ error: 'Comment not found' });
 
-    res.json({ message: 'Comment deleted successfully' });
+    // delete all replies to this comment
+    await Comment.deleteMany({ parentCommentId: comment._id });
+
+    // delete the parent comment itself
+    await Comment.findByIdAndDelete(req.params.id);
+
+    res.json({ message: 'Comment and replies deleted' });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 });
+
 
 // ============================================
 // ABOUT ROUTES

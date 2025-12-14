@@ -4,7 +4,10 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 
 
+
 import Sidebar from "./components/Sidebar";
+import ProtectedRoute from "./components/ProtectedRoute";
+
 
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -14,6 +17,7 @@ import Register from "./pages/Register";
 import NewBlog from "./pages/NewBlog";
 import Drafts from "./pages/Drafts";
 import EditBlog from "./pages/EditBlog";
+
 
 
 // If you have AuthProvider, wrap <AppContent /> with it in main.jsx
@@ -31,9 +35,10 @@ function App() {
             <Route path="/register" element={<Register />} />
 
             {/* Admin routes */}
-            <Route path="/admin/new" element={<NewBlog />} />
-            <Route path="/admin/drafts" element={<Drafts />} />
-            <Route path="/admin/blogs/:id" element={<EditBlog />} />
+            <Route path="/admin/new" element={<ProtectedRoute element={<NewBlog />} />} />
+            <Route path="/admin/drafts" element={<ProtectedRoute element={<Drafts />} />} />
+            <Route path="/admin/blogs/:id" element={<ProtectedRoute element={<EditBlog />} />} />
+
 
             {/* Optional: 404 */}
             {/* <Route path="*" element={<NotFound />} /> */}

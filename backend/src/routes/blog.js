@@ -8,7 +8,7 @@ const router = express.Router();
 // GET /blogs → All published blogs with optional search (PUBLIC)
 router.get('/', async (req, res) => {
   try {
-    const { page = 1, limit = 10, search } = req.query;
+    const { search } = req.query;  // Keep only search
     
     let query = { isPublished: true };
 
@@ -23,25 +23,14 @@ router.get('/', async (req, res) => {
     }
 
     const blogs = await Blog.find(query)
-      .sort({ createdAt: -1 })
-      .limit(limit * 1)
-      .skip((page - 1) * limit)
-      .select('title description coverImageURL likes createdAt');
+      .sort({ createdAt: -1 });
 
-    const total = await Blog.countDocuments(query);
-
-    res.json({
-      blogs,
-      pagination: {
-        current: page,
-        pages: Math.ceil(total / limit),
-        total
-      }
-    });
+    res.json({ blogs });  // Simple response
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 });
+
 
 
 // GET /blogs/:id → Single blog (PUBLIC)

@@ -91,11 +91,8 @@ function BlogDetail() {
 
       <div className="blogdetail-comments">
         <CommentSection
-          blogId={id}
-          isLoggedIn={isAuthenticated}
-          userName={user?.username || "User"}
-          isAdmin={isAdmin}
-          initialComments={blog.comments || []}
+        blogId={id}
+        initialComments={[]}  // API will fetch these
         />
       </div>
     </div>

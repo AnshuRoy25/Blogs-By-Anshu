@@ -34,7 +34,11 @@ function EditBlog() {
         setLoading(true);
         setError("");
 
-        const res = await fetch(`${API_BASE_URL}/blogs/${id}`);
+        const res = await fetch(`${API_BASE_URL}/admin/blogs/${id}`, {
+        headers: {
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        });
         const data = await res.json();
 
         if (!res.ok) {

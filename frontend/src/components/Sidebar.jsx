@@ -128,7 +128,7 @@ function Sidebar() {
         // Case 3: admin -> "Admin"
         <button className="sidebar-user-btn">
           <span className="sidebar-nav-icon">👤</span>
-          <span>{isAdmin ? "Admin" : user?.name || "User"}</span>
+          <span>{isAdmin ? "Admin" : user?.username || "User"}</span>
         </button>
       )}
     </aside>
