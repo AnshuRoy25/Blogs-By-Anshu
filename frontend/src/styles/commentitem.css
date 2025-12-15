@@ -150,6 +150,11 @@
   color: #ff4d4d;
 }
 
+/* Liked state - RED heart */
+.comment-like-btn.liked {
+  color: #ff4d4d;
+}
+
 .comment-like-count {
   color: #b0b0b0;
   font-size: 0.9rem;

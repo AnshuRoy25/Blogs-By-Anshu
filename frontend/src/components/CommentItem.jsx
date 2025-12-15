@@ -14,10 +14,13 @@ function CommentItem({
   onLikeComment,
   onOpenLikers,
 }) {
-  const { isAuthenticated, isAdmin } = useAuth();
+  const { isAuthenticated, isAdmin, user } = useAuth();
   const [showReplyBox, setShowReplyBox] = useState(false);
   const [replyText, setReplyText] = useState("");
   const navigate = useNavigate();
+
+  // Check if current user has liked this comment
+  const hasLiked = user && comment.likedBy?.includes(user.id);
 
   const handleLikeComment = () => {
     if (!isAuthenticated) {
@@ -69,7 +72,10 @@ function CommentItem({
           </button>
         )}
 
-        <button className="comment-like-btn" onClick={handleLikeComment}>
+        <button 
+          className={`comment-like-btn ${hasLiked ? 'liked' : ''}`}
+          onClick={handleLikeComment}
+        >
           <IoHeart size={18} />
         </button>
 

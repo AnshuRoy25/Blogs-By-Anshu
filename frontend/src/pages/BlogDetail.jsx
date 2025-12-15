@@ -1,18 +1,21 @@
 // src/pages/BlogDetail.jsx
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "../styles/blogdetail.css";
 import BlogContent from "../components/BlogContent";
 import CommentSection from "../components/CommentSection";
+import LoadingSpinner from "../components/LoadingSpinner";
 import { useAuth } from "../context/AuthContext";
 import { API_BASE_URL } from "../config/api";
 import LikersModal from "../components/LikersModal";
 
 function BlogDetail() {
-  const { id } = useParams(); // blog id from URL
-  const { isAuthenticated, isAdmin, user, token } = useAuth(); // ⬅ added token
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { isAuthenticated, token, user } = useAuth();
 
   const [blog, setBlog] = useState(null);
+  const [hasLiked, setHasLiked] = useState(false);  // Track if current user liked
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [likersOpen, setLikersOpen] = useState(false);
@@ -31,6 +34,12 @@ function BlogDetail() {
 
         if (res.ok) {
           setBlog(data.blog);
+          
+          // Check if current user has liked this blog
+          if (isAuthenticated && user && data.blog.likedBy) {
+            const userHasLiked = data.blog.likedBy.includes(user.id);
+            setHasLiked(userHasLiked);
+          }
         } else {
           setError(data.error || "Failed to load blog");
         }
@@ -43,11 +52,11 @@ function BlogDetail() {
     };
 
     if (id) fetchBlog();
-  }, [id]);
+  }, [id, isAuthenticated, user]);
 
   const handleLike = async () => {
     if (!isAuthenticated) {
-      alert("You must be logged in to like this blog.");
+      navigate("/register");
       return;
     }
 
@@ -63,11 +72,15 @@ function BlogDetail() {
       const data = await res.json();
 
       if (res.ok) {
-        // assume backend returns updated blog object with new likes
+        // Update blog with new like count and likedBy array
         setBlog((prev) => ({
           ...prev,
           likes: data.blog?.likes ?? prev.likes,
+          likedBy: data.blog?.likedBy ?? prev.likedBy,
         }));
+        
+        // Toggle hasLiked state
+        setHasLiked((prev) => !prev);
       } else {
         alert(data.error || "Failed to like blog");
       }
@@ -85,10 +98,6 @@ function BlogDetail() {
     }
   };
 
-  if (loading) return <div className="blogdetail-loading">Loading...</div>;
-  if (error) return <div className="blogdetail-error">{error}</div>;
-  if (!blog) return <div className="blogdetail-error">Blog not found</div>;
-
   const handleOpenLikers = async (type, targetId) => {
     setLikersOpen(true);
     setLikersLoading(true);
@@ -97,52 +106,61 @@ function BlogDetail() {
     let url;
     if (type === "blog") url = `${API_BASE_URL}/blogs/likes/blogs/${targetId}`;
     if (type === "comment" || type === "reply")
-        url = `${API_BASE_URL}/comments/likes/comments/${targetId}`;
+      url = `${API_BASE_URL}/comments/likes/comments/${targetId}`;
 
     try {
-        const res = await fetch(url);
-        const data = await res.json();
-        if (res.ok) {
+      const res = await fetch(url);
+      const data = await res.json();
+      if (res.ok) {
         setLikersUsers(data.users || []);
-        } else {
+      } else {
         alert(data.error || "Failed to load likes");
-        }
+      }
     } catch (err) {
-        console.error(err);
-        alert("Network error while loading likes");
+      console.error(err);
+      alert("Network error while loading likes");
     } finally {
-        setLikersLoading(false);
+      setLikersLoading(false);
     }
-    };
+  };
 
-
+  if (loading) return (
+    <div className="blogdetail-container">
+      <div className="blogdetail-wrapper">
+        <LoadingSpinner />
+      </div>
+    </div>
+  );
+  if (error) return <div className="blogdetail-error">{error}</div>;
+  if (!blog) return <div className="blogdetail-error">Blog not found</div>;
 
   return (
     <div className="blogdetail-container">
       <div className="blogdetail-wrapper">
         <BlogContent
-        blog={blog}
-        onLike={handleLike}
-        onShare={handleShare}
-        onOpenLikers={handleOpenLikers}   // ← pass down
+          blog={blog}
+          onLike={handleLike}
+          onShare={handleShare}
+          onOpenLikers={handleOpenLikers}
+          hasLiked={hasLiked}  // Pass hasLiked state
         />
 
         <div className="blogdetail-comments">
-        <CommentSection
+          <CommentSection
             blogId={id}
             initialComments={[]}
-            onOpenLikers={handleOpenLikers}  // ← pass down
-        />
+            onOpenLikers={handleOpenLikers}
+          />
         </div>
       </div>
 
-        <LikersModal
+      <LikersModal
         open={likersOpen}
         onClose={() => setLikersOpen(false)}
         users={likersLoading ? [] : likersUsers}
-        />
+      />
     </div>
-    );
+  );
 }
 
 export default BlogDetail;

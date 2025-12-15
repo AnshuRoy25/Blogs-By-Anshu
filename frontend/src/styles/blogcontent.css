@@ -1,7 +1,5 @@
 /* frontend/src/styles/blogcontent.css */
 
-/* frontend/src/styles/blogcontent.css */
-
 .blog-content {
   background-color: #1a1a1a; /* Blackish background matching sidebar */
   border-radius: 20px;
@@ -121,6 +119,11 @@
 }
 
 .blog-action-btn.like-btn:hover {
+  color: #ff4d4d;
+}
+
+/* Liked state - RED heart */
+.blog-action-btn.like-btn.liked {
   color: #ff4d4d;
 }
 

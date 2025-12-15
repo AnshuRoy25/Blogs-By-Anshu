@@ -100,46 +100,50 @@ function About() {
 
   return (
     <div className="about-container">
-      <div className="about-header-row">
-        <h1 className="about-title">About</h1>
+      <div className="about-wrapper">
+        <div className="about-inner-card">
+          <div className="about-header-row">
+            <h1 className="about-title">About</h1>
 
-        {isAdmin && !loading && (
-          <div className="about-header-buttons">
-            {isEditing ? (
-              <>
-                <button className="about-btn secondary" onClick={handleBack} disabled={saving}>
-                  Back
-                </button>
-                <button className="about-btn primary" onClick={handleSave} disabled={saving}>
-                  {saving ? "Saving..." : "Save"}
-                </button>
-              </>
-            ) : (
-              <button className="about-btn primary" onClick={handleEdit}>
-                Edit
-              </button>
+            {isAdmin && !loading && (
+              <div className="about-header-buttons">
+                {isEditing ? (
+                  <>
+                    <button className="about-btn secondary" onClick={handleBack} disabled={saving}>
+                      Back
+                    </button>
+                    <button className="about-btn primary" onClick={handleSave} disabled={saving}>
+                      {saving ? "Saving..." : "Save"}
+                    </button>
+                  </>
+                ) : (
+                  <button className="about-btn primary" onClick={handleEdit}>
+                    Edit
+                  </button>
+                )}
+              </div>
             )}
           </div>
-        )}
-      </div>
 
-      {loading && <p className="about-loading">Loading...</p>}
+          {loading && <p className="about-loading">Loading...</p>}
 
-      {error && <p className="about-error">{error}</p>}
+          {error && <p className="about-error">{error}</p>}
 
-      {!loading && !error && (
-        <div className="about-card">
-          {isAdmin && isEditing ? (
-            <textarea
-              className="about-textarea"
-              value={draftContent}
-              onChange={(e) => setDraftContent(e.target.value)}
-            />
-          ) : (
-            <p className="about-content">{aboutContent}</p>
+          {!loading && !error && (
+            <>
+              {isAdmin && isEditing ? (
+                <textarea
+                  className="about-textarea"
+                  value={draftContent}
+                  onChange={(e) => setDraftContent(e.target.value)}
+                />
+              ) : (
+                <p className="about-content">{aboutContent}</p>
+              )}
+            </>
           )}
         </div>
-      )}
+      </div>
     </div>
   );
 }

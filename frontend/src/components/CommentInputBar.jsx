@@ -14,11 +14,13 @@ function CommentInputBar({ onAddComment }) {
     e.preventDefault();
     if (!text.trim()) return;
 
+    // Redirect to register if not logged in
     if (!isAuthenticated) {
       navigate("/register");
       return;
     }
 
+    // Submit comment if logged in
     onAddComment(text.trim());
     setText("");
   };

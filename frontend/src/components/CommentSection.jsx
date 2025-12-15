@@ -165,12 +165,16 @@ function CommentSection({ blogId, initialComments = [], onOpenLikers }) {
           prev.map((c) => {
             if (c._id === updated._id) {
               // top-level comment liked
-              return { ...updated, replies: c.replies };
+              return { 
+                ...updated, 
+                replies: c.replies,
+                likedBy: updated.likedBy  // Keep likedBy array
+              };
             }
 
             // try to update inside replies
             const updatedReplies = (c.replies || []).map((r) =>
-              r._id === updated._id ? updated : r
+              r._id === updated._id ? { ...updated } : r
             );
 
             return { ...c, replies: updatedReplies };
@@ -227,14 +231,9 @@ function CommentSection({ blogId, initialComments = [], onOpenLikers }) {
       {loading && <p className="comment-section-loading">Loading comments...</p>}
       {error && <p className="comment-section-error">{error}</p>}
 
-      {isAuthenticated && !error && (
+      {/* Always show comment input box */}
+      {!error && (
         <CommentInputBar onAddComment={handleAddComment} />
-      )}
-
-      {!isAuthenticated && !error && (
-        <p className="comment-section-login-hint">
-          Log in to write a comment.
-        </p>
       )}
 
       <div className="comment-section-list">
@@ -244,7 +243,7 @@ function CommentSection({ blogId, initialComments = [], onOpenLikers }) {
             comment={comment}
             onDeleteComment={handleDeleteComment}
             onAddReply={handleReply}
-            onDeleteReply={handleDeleteReply} // replies are comments too
+            onDeleteReply={handleDeleteReply}
             onLikeComment={handleLikeComment}
             onOpenLikers={onOpenLikers}
           />

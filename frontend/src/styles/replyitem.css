@@ -1,9 +1,10 @@
 /* frontend/src/styles/replyitem.css */
 
 .reply-item {
-  background-color: #333333; /* Darker shade for replies */
+  background-color: #1f1f1f; /* Blackish background instead of gray */
   border-radius: 12px;
   padding: 16px;
+  border: 1px solid #2a2a2a;
 }
 
 .reply-header {
@@ -17,7 +18,7 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background-color: #444444;
+  background-color: #3a3a3a;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -34,7 +35,7 @@
 
 .reply-delete-btn {
   background-color: transparent;
-  border: 1px solid #777;
+  border: 1px solid #666;
   color: #d0d0d0;
   padding: 5px 12px;
   border-radius: 14px;
@@ -50,13 +51,14 @@
 }
 
 .reply-text {
-  background-color: #4a4a4a;
+  background-color: #2a2a2a; /* Darker blackish for text bubble */
   color: #d0d0d0;
-  padding: 14px;
+  padding: 14px 16px;
   border-radius: 10px;
   font-size: 0.9rem;
   line-height: 1.6;
   margin-bottom: 10px;
+  border: 1px solid #333333;
 }
 
 .reply-actions {
@@ -83,6 +85,11 @@
   color: #ff4d4d;
 }
 
+/* Liked state - RED heart */
+.reply-like-btn.liked {
+  color: #ff4d4d;
+}
+
 .reply-like-count {
   color: #b0b0b0;
   font-size: 0.85rem;
@@ -105,6 +112,6 @@
 
   .reply-text {
     font-size: 0.85rem;
-    padding: 12px;
+    padding: 12px 14px;
   }
 }

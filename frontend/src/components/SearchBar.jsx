@@ -1,22 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { IoSearch } from 'react-icons/io5';
 
-function SearchBar({ onSearch }) {
-  const [searchTerm, setSearchTerm] = useState('');
-  
+function SearchBar({ onSearch, searchTerm }) {
   const handleChange = (e) => {
-    setSearchTerm(e.target.value);
-  };
-  
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (searchTerm.trim()) {
-      onSearch(searchTerm);
-    }
+    // Trigger search on every keystroke
+    onSearch(e.target.value);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={(e) => e.preventDefault()}>
       {/* Search icon */}
       <span className="search-icon">
         <IoSearch size={20} />
@@ -28,7 +20,8 @@ function SearchBar({ onSearch }) {
         placeholder="Search blogs..."
       />
       
-      <button type="submit">Search</button>
+      {/* Hide submit button since search is automatic */}
+      <button type="submit" style={{ display: 'none' }}>Search</button>
     </form>
   );
 }

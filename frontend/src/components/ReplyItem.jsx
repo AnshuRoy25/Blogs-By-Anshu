@@ -1,15 +1,20 @@
 // src/components/ReplyItem.jsx
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { IoPerson, IoHeart } from "react-icons/io5";
 import "../styles/replyitem.css";
 
 function ReplyItem({ reply, onDeleteReply, onLikeReply, onOpenLikers }) {
-  const { isAdmin, isAuthenticated } = useAuth();
+  const { isAdmin, isAuthenticated, user } = useAuth();
+  const navigate = useNavigate();
+
+  // Check if current user has liked this reply
+  const hasLiked = user && reply.likedBy?.includes(user.id);
 
   const handleLike = () => {
     if (!isAuthenticated) {
-      alert("Please log in to like replies.");
+      navigate("/register");
       return;
     }
     onLikeReply?.(reply._id);
@@ -38,7 +43,10 @@ function ReplyItem({ reply, onDeleteReply, onLikeReply, onOpenLikers }) {
       <div className="reply-text">{reply.content}</div>
 
       <div className="reply-actions">
-        <button className="reply-like-btn" onClick={handleLike}>
+        <button 
+          className={`reply-like-btn ${hasLiked ? 'liked' : ''}`}
+          onClick={handleLike}
+        >
           <IoHeart size={16} />
         </button>
         <span

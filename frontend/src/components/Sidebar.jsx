@@ -16,8 +16,11 @@ function Sidebar() {
   const location = useLocation();
   const { isAuthenticated, isAdmin, user, logout } = useAuth();
 
+  // Replace this with your Cloudinary URL
+  const PROFILE_IMAGE_URL = "https://res.cloudinary.com/dl9ey6o4d/image/upload/v1765805597/10974cff-82ff-4377-8869-8162d6e599fb.png";
+
   const handleResumeClick = () => {
-    window.open("https://your-drive-link-to-resume.com", "_blank");
+    window.open("https://drive.google.com/file/d/15MwP0SWgOSs3hpJ7rQUIkNymGk8KPwrP/view?usp=drive_link", "_blank");
   };
 
   const handleLogout = () => {
@@ -29,7 +32,13 @@ function Sidebar() {
     <aside className="sidebar">
       {/* Top profile section */}
       <div className="sidebar-profile">
-        <div className="sidebar-avatar" />
+        <div className="sidebar-avatar">
+          <img 
+            src={PROFILE_IMAGE_URL} 
+            alt="Anshu Roy Profile" 
+            className="sidebar-avatar-img"
+          />
+        </div>
         <div className="sidebar-title">Blogs | Anshu Roy</div>
 
         <div className="sidebar-socials">

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { IoArrowBack, IoHeart, IoShareSocial } from 'react-icons/io5';
 import '../styles/blogcontent.css';
 
-function BlogContent({ blog, onLike, onShare, onOpenLikers }) {
+function BlogContent({ blog, onLike, onShare, onOpenLikers, hasLiked }) {
   const navigate = useNavigate();
 
   const formatDate = (dateString) => {
@@ -42,7 +42,10 @@ function BlogContent({ blog, onLike, onShare, onOpenLikers }) {
 
       {/* Like and share buttons */}
       <div className="blog-actions">
-        <button className="blog-action-btn like-btn" onClick={onLike}>
+        <button 
+          className={`blog-action-btn like-btn ${hasLiked ? 'liked' : ''}`}
+          onClick={onLike}
+        >
           <IoHeart size={22} />
         </button>
 

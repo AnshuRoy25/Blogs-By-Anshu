@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "../styles/home.css";
 import BlogCard from "../components/BlogCard";
 import SearchBar from "../components/SearchBar";
+import LoadingSpinner from "../components/LoadingSpinner";
 import { useAuth } from "../context/AuthContext";
 import { API_BASE_URL } from "../config/api";
 
@@ -11,6 +12,7 @@ function Home() {
   const { isAdmin, token } = useAuth();
   const [blogs, setBlogs] = useState([]);
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -24,7 +26,16 @@ function Home() {
     });
   };
 
-  // Fetch blogs whenever search term changes
+  // Debounce search input (wait 300ms after user stops typing)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  // Fetch blogs whenever debounced search term changes
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
@@ -32,7 +43,7 @@ function Home() {
         setError("");
 
         const params = new URLSearchParams();
-        if (search.trim()) params.set("search", search.trim());
+        if (debouncedSearch.trim()) params.set("search", debouncedSearch.trim());
 
         const res = await fetch(`${API_BASE_URL}/blogs?${params.toString()}`);
         const data = await res.json();
@@ -51,7 +62,7 @@ function Home() {
     };
 
     fetchBlogs();
-  }, [search]);
+  }, [debouncedSearch]);
 
   const handleOpenBlog = (blogId) => {
     navigate(`/blogs/${blogId}`);
@@ -59,50 +70,51 @@ function Home() {
 
   const handleEditBlog = (blogId) => {
     navigate(`/admin/blogs/${blogId}`);
-    };
+  };
 
+  const handleDeleteBlog = async (blogId) => {
+    const ok = window.confirm("Delete this blog?");
+    if (!ok) return;
 
-    const handleDeleteBlog = async (blogId) => {
-        const ok = window.confirm("Delete this blog?");
-        if (!ok) return;
+    if (!token) {
+      alert("You are not logged in as admin.");
+      return;
+    }
 
-        if (!token) {
-        alert("You are not logged in as admin.");
-        return;
-        }
+    try {
+      const res = await fetch(`${API_BASE_URL}/admin/blogs/${blogId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
 
-        try {
-        const res = await fetch(`${API_BASE_URL}/admin/blogs/${blogId}`, {
-            method: "DELETE",
-            headers: {
-            Authorization: `Bearer ${token}`,
-            },
-        });
-        const data = await res.json();
-
-        if (res.ok) {
-            setBlogs((prev) => prev.filter((b) => b._id !== blogId));
-        } else {
-            alert(data.error || "Failed to delete blog");
-        }
-        } catch (err) {
-        console.error(err);
-        alert("Network error while deleting blog");
-        }
-    };
-
+      if (res.ok) {
+        setBlogs((prev) => prev.filter((b) => b._id !== blogId));
+      } else {
+        alert(data.error || "Failed to delete blog");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Network error while deleting blog");
+    }
+  };
 
   return (
     <div className="home-container">
       <div className="home-search-bar">
-        <SearchBar onSearch={(term) => setSearch(term)} />
+        <SearchBar 
+          onSearch={setSearch}  // Pass setSearch directly
+          searchTerm={search}    // Pass current search value
+        />
       </div>
 
-      {loading && <p className="home-loading">Loading blogs...</p>}
-      {error && <p className="home-error">{error}</p>}
-
       <div className="home-blog-list">
-        {blogs.map((blog) => (
+        {loading && <LoadingSpinner />}
+        {error && <p className="home-error">{error}</p>}
+
+        {!loading && !error && blogs.map((blog) => (
           <BlogCard
             key={blog._id}
             title={blog.title}
