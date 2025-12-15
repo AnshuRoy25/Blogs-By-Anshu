@@ -3,8 +3,16 @@ import React from "react";
 import { useAuth } from "../context/AuthContext";
 import "../styles/replyitem.css";
 
-function ReplyItem({ reply, onDeleteReply }) {
-  const { isAdmin } = useAuth();
+function ReplyItem({ reply, onDeleteReply, onLikeReply, onOpenLikers }) {
+  const { isAdmin, isAuthenticated } = useAuth();
+
+  const handleLike = () => {
+    if (!isAuthenticated) {
+      alert("Please log in to like replies.");
+      return;
+    }
+    onLikeReply?.(reply._id);
+  };
 
   return (
     <div className="reply-item">
@@ -25,6 +33,18 @@ function ReplyItem({ reply, onDeleteReply }) {
       </div>
 
       <div className="reply-text">{reply.content}</div>
+
+      <div className="reply-actions">
+        <button className="reply-like-btn" onClick={handleLike}>
+          ❤️
+        </button>
+        <span
+          className="reply-like-count"
+          onClick={() => onOpenLikers?.("reply", reply._id)}
+        >
+          {reply.likes ?? 0} likes
+        </span>
+      </div>
     </div>
   );
 }

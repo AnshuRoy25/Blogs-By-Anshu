@@ -25,16 +25,34 @@ function Sidebar() {
         <div className="sidebar-title">Blogs | Anshu Roy</div>
 
         <div className="sidebar-socials">
-          <button className="sidebar-icon-btn" aria-label="GitHub">
-            GH
-          </button>
-          <button className="sidebar-icon-btn" aria-label="Instagram">
-            IG
-          </button>
-          <button className="sidebar-icon-btn" aria-label="LinkedIn">
-            IN
-          </button>
+            <a
+                href="https://github.com/AnshuRoy25"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="GitHub"
+            >
+                <button className="sidebar-icon-btn">GH</button>
+            </a>
+
+            <a
+                href="https://www.instagram.com/anshuroy2006/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+            >
+                <button className="sidebar-icon-btn">IG</button>
+            </a>
+
+            <a
+                href="https://www.linkedin.com/in/anshuroy2006/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
+            >
+                <button className="sidebar-icon-btn">IN</button>
+            </a>
         </div>
+
       </div>
 
       {/* Main navigation (common) */}

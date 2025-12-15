@@ -41,6 +41,13 @@ const blogSchema = new mongoose.Schema(
       min: 0,
     },
 
+    likedBy: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
+
     publishedAt: {
       type: Date,
       default: null,

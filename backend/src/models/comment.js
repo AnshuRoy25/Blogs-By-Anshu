@@ -17,6 +17,13 @@ const commentSchema = new mongoose.Schema(
       min: 0,
     },
 
+    likedBy: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
+
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',

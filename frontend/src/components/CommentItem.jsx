@@ -11,6 +11,7 @@ function CommentItem({
   onAddReply,
   onDeleteReply,
   onLikeComment,
+  onOpenLikers,
 }) {
   const { isAuthenticated, isAdmin } = useAuth();
   const [showReplyBox, setShowReplyBox] = useState(false);
@@ -68,6 +69,13 @@ function CommentItem({
         <button className="comment-like-btn" onClick={handleLikeComment}>
           ❤️
         </button>
+
+        <span
+          className="comment-like-count"
+          onClick={() => onOpenLikers?.("comment", comment._id)}
+        >
+          {comment.likes ?? 0} likes
+        </span>
       </div>
 
       {isAdmin && showReplyBox && (
@@ -93,6 +101,8 @@ function CommentItem({
               key={reply._id}
               reply={reply}
               onDeleteReply={() => onDeleteReply?.(comment._id, reply._id)}
+              onLikeReply={onLikeComment}
+              onOpenLikers={onOpenLikers}
             />
           ))}
         </div>

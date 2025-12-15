@@ -6,6 +6,7 @@ import BlogContent from "../components/BlogContent";
 import CommentSection from "../components/CommentSection";
 import { useAuth } from "../context/AuthContext";
 import { API_BASE_URL } from "../config/api";
+import LikersModal from "../components/LikersModal";
 
 function BlogDetail() {
   const { id } = useParams(); // blog id from URL
@@ -14,6 +15,9 @@ function BlogDetail() {
   const [blog, setBlog] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [likersOpen, setLikersOpen] = useState(false);
+  const [likersUsers, setLikersUsers] = useState([]);
+  const [likersLoading, setLikersLoading] = useState(false);
 
   // Fetch single blog when page loads
   useEffect(() => {
@@ -85,18 +89,59 @@ function BlogDetail() {
   if (error) return <div className="blogdetail-error">{error}</div>;
   if (!blog) return <div className="blogdetail-error">Blog not found</div>;
 
+  const handleOpenLikers = async (type, targetId) => {
+    setLikersOpen(true);
+    setLikersLoading(true);
+    setLikersUsers([]);
+
+    let url;
+    if (type === "blog") url = `${API_BASE_URL}/blogs/likes/blogs/${targetId}`;
+    if (type === "comment" || type === "reply")
+        url = `${API_BASE_URL}/comments/likes/comments/${targetId}`;
+
+    try {
+        const res = await fetch(url);
+        const data = await res.json();
+        if (res.ok) {
+        setLikersUsers(data.users || []);
+        } else {
+        alert(data.error || "Failed to load likes");
+        }
+    } catch (err) {
+        console.error(err);
+        alert("Network error while loading likes");
+    } finally {
+        setLikersLoading(false);
+    }
+    };
+
+
+
   return (
     <div className="blogdetail-container">
-      <BlogContent blog={blog} onLike={handleLike} onShare={handleShare} />
-
-      <div className="blogdetail-comments">
-        <CommentSection
-        blogId={id}
-        initialComments={[]}  // API will fetch these
+        <BlogContent
+        blog={blog}
+        onLike={handleLike}
+        onShare={handleShare}
+        onOpenLikers={handleOpenLikers}   // ← pass down
         />
-      </div>
+
+        <div className="blogdetail-comments">
+        <CommentSection
+            blogId={id}
+            initialComments={[]}
+            onOpenLikers={handleOpenLikers}  // ← pass down
+        />
+        </div>
+
+        <LikersModal
+        open={likersOpen}
+        onClose={() => setLikersOpen(false)}
+        users={likersLoading ? [] : likersUsers}
+        />
     </div>
-  );
+    );
+
 }
 
 export default BlogDetail;

@@ -49,13 +49,34 @@ router.get('/:id', async (req, res) => {
 });
 
 // PUT /blogs/:id/like → Like blog (USERS ONLY)
+// NEW
+// PUT /blogs/:id/like → toggle like on blog (USERS ONLY)
 router.put('/:id/like', verifyToken, async (req, res) => {
   try {
-    const blog = await Blog.findByIdAndUpdate(
-      req.params.id,
-      { $inc: { likes: 1 } },
+    const userId = req.user.id;
+    const blogId = req.params.id;
+
+    // 1) Try to LIKE: only if user is not already in likedBy
+    let blog = await Blog.findOneAndUpdate(
+      { _id: blogId, likedBy: { $ne: userId } },
+      {
+        $addToSet: { likedBy: userId },   // add userId once
+        $inc: { likes: 1 },               // increase like count
+      },
       { new: true }
     );
+
+    // 2) If null, user had already liked → UNLIKE instead
+    if (!blog) {
+      blog = await Blog.findOneAndUpdate(
+        { _id: blogId, likedBy: userId },
+        {
+          $pull: { likedBy: userId },     // remove userId
+          $inc: { likes: -1 },            // decrease like count
+        },
+        { new: true }
+      );
+    }
 
     if (!blog) {
       return res.status(404).json({ error: 'Blog not found' });
@@ -66,5 +87,23 @@ router.put('/:id/like', verifyToken, async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 });
+
+// GET /likes/blogs/:id
+router.get("/likes/blogs/:id", async (req, res) => {
+  try {
+    const blog = await Blog.findById(req.params.id).populate(
+      "likedBy",
+      "username"
+    );
+    if (!blog) return res.status(404).json({ error: "Blog not found" });
+
+    res.json({ users: blog.likedBy }); // [{ _id, username }]
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+
 
 export default router;

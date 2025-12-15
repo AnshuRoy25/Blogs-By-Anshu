@@ -1,9 +1,8 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/blogcontent.css';
 
-function BlogContent({ blog, onLike, onShare }) {
+function BlogContent({ blog, onLike, onShare, onOpenLikers }) {
   const navigate = useNavigate();
 
   const formatDate = (dateString) => {
@@ -45,6 +44,14 @@ function BlogContent({ blog, onLike, onShare }) {
         <button className="blog-action-btn like-btn" onClick={onLike}>
           ❤️
         </button>
+
+        <span
+          className="blog-likes"
+          onClick={() => onOpenLikers?.("blog", blog._id)}
+        >
+          {blog.likes ?? 0} likes
+        </span>
+
         <button className="blog-action-btn share-btn" onClick={onShare}>
           🔗
         </button>

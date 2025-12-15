@@ -15,13 +15,16 @@ router.post('/', verifyToken, async (req, res) => {
       return res.status(400).json({ error: 'content and blogId are required' });
     }
 
-    const comment = await Comment.create({
+    let comment = await Comment.create({
       content,
       blogId,
-      userId: req.user.id,   // logged-in user
-      parentCommentId: null, // top-level
+      userId: req.user.id,
+      parentCommentId: null,
       isAdminReply: false,
     });
+
+    comment = await comment.populate('userId', 'username');
+
 
     res.status(201).json({ comment });
   } catch (err) {
@@ -64,21 +67,64 @@ router.get('/:blogId', async (req, res) => {
 });
 
 
-// PUT /comments/:id/like  → like a comment (USERS ONLY)
+
+// PUT /comments/:id/like → toggle like (USERS ONLY)
 router.put('/:id/like', verifyToken, async (req, res) => {
   try {
-    const comment = await Comment.findByIdAndUpdate(
-      req.params.id,
-      { $inc: { likes: 1 } },
+    const userId = req.user.id;
+    const commentId = req.params.id;
+
+    // 1) Try to LIKE: only if user is not already in likedBy
+    let comment = await Comment.findOneAndUpdate(
+      { _id: commentId, likedBy: { $ne: userId } },
+      {
+        $addToSet: { likedBy: userId },   // add userId once
+        $inc: { likes: 1 },               // increase like count
+      },
       { new: true }
     );
 
-    if (!comment) return res.status(404).json({ error: 'Comment not found' });
+    // 2) If no doc matched above, user had already liked → UNLIKE instead
+    if (!comment) {
+      comment = await Comment.findOneAndUpdate(
+        { _id: commentId, likedBy: userId },
+        {
+          $pull: { likedBy: userId },     // remove userId
+          $inc: { likes: -1 },            // decrease like count
+        },
+        { new: true }
+      );
+    }
+
+    if (!comment) {
+      return res.status(404).json({ error: 'Comment not found' });
+    }
+
+    // keep username available so UI doesn’t show Anonymous after like
+    await comment.populate('userId', 'username');
 
     res.json({ comment });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 });
+
+// GET /likes/comments/:id
+router.get("/likes/comments/:id", async (req, res) => {
+  try {
+    const comment = await Comment.findById(req.params.id).populate(
+      "likedBy",
+      "username"
+    );
+    if (!comment) return res.status(404).json({ error: "Comment not found" });
+
+    res.json({ users: comment.likedBy });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+
 
 export default router;
