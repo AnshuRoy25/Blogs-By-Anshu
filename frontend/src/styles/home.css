@@ -1,0 +1,85 @@
+/* Home page container */
+.home-container {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #2a2a2a;
+  padding: 32px 48px;
+  box-sizing: border-box;
+}
+
+/* Search bar section at top */
+.home-search-bar {
+  margin-bottom: 32px;
+  position: relative;
+}
+
+/* Search bar form */
+.home-search-bar form {
+  position: relative;
+  width: 100%;
+}
+
+/* Search icon inside input */
+.home-search-bar .search-icon {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: #666666;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Search input */
+.home-search-bar input {
+  width: 100%;
+  padding: 16px 20px 16px 56px;
+  background-color: #c9c9c9;
+  border: none;
+  border-radius: 999px;
+  font-size: 15px;
+  color: #000000;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.home-search-bar input::placeholder {
+  color: #666666;
+  opacity: 1;
+}
+
+.home-search-bar input:focus {
+  outline: none;
+  background-color: #d0d0d0;
+}
+
+/* Hide submit button */
+.home-search-bar button[type="submit"] {
+  display: none;
+}
+
+/* Blog list container */
+.home-blog-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Loading and error states */
+.home-loading,
+.home-error,
+.home-empty {
+  color: #ffffff;
+  font-size: 16px;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.home-error {
+  color: #ff6b6b;
+}
+
+.home-empty {
+  color: #999999;
+}

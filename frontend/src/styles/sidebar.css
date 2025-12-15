@@ -1,0 +1,164 @@
+/* Sidebar container - fixed height, no scroll */
+.sidebar {
+  width: 280px;
+  height: 100vh;
+  background-color: #1a1a1a;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 16px;
+  box-sizing: border-box;
+  position: fixed;
+  left: 0;
+  top: 0;
+  overflow: hidden; /* No scrolling */
+}
+
+/* Profile section at top */
+.sidebar-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.sidebar-avatar {
+  width: 80px;
+  height: 80px;
+  background-color: #d9d9d9;
+  border-radius: 50%;
+}
+
+.sidebar-title {
+  font-size: 16px;
+  font-weight: 400;
+  color: #ffffff;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.sidebar-socials {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.sidebar-icon-btn {
+  width: 32px;
+  height: 32px;
+  background-color: transparent;
+  border: none;
+  border-radius: 50%;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.sidebar-icon-btn:hover {
+  background-color: #2a2a2a;
+}
+
+.sidebar-icon-btn:focus {
+  outline: none;
+}
+
+/* Navigation section - takes available space */
+.sidebar-nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background-color: transparent;
+  border: none;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s;
+  text-align: left;
+}
+
+.sidebar-nav-btn:hover {
+  background-color: #2a2a2a;
+}
+
+.sidebar-nav-btn.active {
+  background-color: #d9d9d9;
+  color: #000000;
+}
+
+.sidebar-nav-icon {
+  font-size: 18px;
+  width: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Auth section - at bottom, above user button */
+.sidebar-auth {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.sidebar-auth-btn {
+  flex: 1;
+  padding: 10px 16px;
+  background-color: #d9d9d9;
+  border: none;
+  border-radius: 24px;
+  color: #000000;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.sidebar-auth-btn:hover {
+  background-color: #e5e5e5;
+}
+
+.sidebar-auth-btn:focus {
+  outline: none;
+}
+
+/* User button - at very bottom */
+.sidebar-user-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background-color: #2a2a2a;
+  border: none;
+  border-radius: 24px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.sidebar-user-btn:hover {
+  background-color: #333333;
+}
+
+.sidebar-user-btn:focus {
+  outline: none;
+}
