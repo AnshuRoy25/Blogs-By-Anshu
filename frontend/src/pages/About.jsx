@@ -101,30 +101,32 @@ function About() {
   return (
     <div className="about-container">
       <div className="about-wrapper">
-        <div className="about-inner-card">
-          <div className="about-header-row">
-            <h1 className="about-title">About</h1>
+        {/* Header OUTSIDE the blackish card - in grayish layer */}
+        <div className="about-header-row">
+          <h1 className="about-title">About</h1>
 
-            {isAdmin && !loading && (
-              <div className="about-header-buttons">
-                {isEditing ? (
-                  <>
-                    <button className="about-btn secondary" onClick={handleBack} disabled={saving}>
-                      Back
-                    </button>
-                    <button className="about-btn primary" onClick={handleSave} disabled={saving}>
-                      {saving ? "Saving..." : "Save"}
-                    </button>
-                  </>
-                ) : (
-                  <button className="about-btn primary" onClick={handleEdit}>
-                    Edit
+          {isAdmin && !loading && (
+            <div className="about-header-buttons">
+              {isEditing ? (
+                <>
+                  <button className="about-btn secondary" onClick={handleBack} disabled={saving}>
+                    Back
                   </button>
-                )}
-              </div>
-            )}
-          </div>
+                  <button className="about-btn primary" onClick={handleSave} disabled={saving}>
+                    {saving ? "Saving..." : "Save"}
+                  </button>
+                </>
+              ) : (
+                <button className="about-btn primary" onClick={handleEdit}>
+                  Edit
+                </button>
+              )}
+            </div>
+          )}
+        </div>
 
+        {/* Inner blackish card with ONLY content */}
+        <div className="about-inner-card">
           {loading && <p className="about-loading">Loading...</p>}
 
           {error && <p className="about-error">{error}</p>}
