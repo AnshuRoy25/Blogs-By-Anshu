@@ -1,0 +1,38 @@
+/* frontend/src/styles/blogdetail.css */
+
+.blogdetail-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.blogdetail-loading {
+  text-align: center;
+  color: #999;
+  padding: 60px 20px;
+  font-size: 1.1rem;
+}
+
+.blogdetail-error {
+  color: #ff6b6b;
+  background-color: rgba(255, 107, 107, 0.1);
+  padding: 16px 20px;
+  border-radius: 12px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+.blogdetail-comments {
+  margin-top: 48px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .blogdetail-container {
+    padding: 16px;
+  }
+
+  .blogdetail-comments {
+    margin-top: 32px;
+  }
+}
