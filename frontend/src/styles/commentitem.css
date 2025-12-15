@@ -2,6 +2,11 @@
 
 .comment-section {
   margin-top: 32px;
+  background-color: #1a1a1a; /* Blackish background matching blog content */
+  border-radius: 20px;
+  padding: 32px;
+  border: 1px solid #0f0f0f;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .comment-section-title {
@@ -47,7 +52,7 @@
 
 /* Individual comment item */
 .comment-item {
-  background-color: #3a3a3a;
+  background-color: #2a2a2a; /* Slightly lighter than container */
   border-radius: 16px;
   padding: 20px;
 }
@@ -63,7 +68,7 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: #555;
+  background-color: #3a3a3a;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -164,7 +169,7 @@
   display: flex;
   gap: 8px;
   margin-top: 12px;
-  background-color: #4a4a4a;
+  background-color: #3a3a3a;
   border-radius: 20px;
   padding: 4px 4px 4px 16px;
 }
@@ -207,7 +212,7 @@
 .replies-container {
   margin-top: 16px;
   padding-left: 24px;
-  border-left: 3px solid #555;
+  border-left: 3px solid #3a3a3a;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -215,6 +220,10 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+  .comment-section {
+    padding: 24px;
+  }
+
   .comment-item {
     padding: 16px;
   }

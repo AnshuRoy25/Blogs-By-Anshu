@@ -1,10 +1,14 @@
 /* frontend/src/styles/blogcontent.css */
 
+/* frontend/src/styles/blogcontent.css */
+
 .blog-content {
-  background-color: #3a3a3a;
+  background-color: #1a1a1a; /* Blackish background matching sidebar */
   border-radius: 20px;
   padding: 40px;
   margin-bottom: 32px;
+  border: 1px solid #0f0f0f;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 /* Back button */

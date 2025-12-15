@@ -1,9 +1,18 @@
 /* frontend/src/styles/blogdetail.css */
 
 .blogdetail-container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 24px;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #1a1a1a; /* Match sidebar background */
+  padding: 32px 48px;
+  box-sizing: border-box;
+}
+
+/* Gray background wrapper for blog content and comments */
+.blogdetail-wrapper {
+  background-color: #2a2a2a; /* Greyish background like homepage */
+  border-radius: 20px;
+  padding: 32px;
 }
 
 .blogdetail-loading {
@@ -23,16 +32,32 @@
 }
 
 .blogdetail-comments {
-  margin-top: 48px;
+  margin-top: 32px;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
   .blogdetail-container {
-    padding: 16px;
+    padding: 24px 20px;
+  }
+
+  .blogdetail-wrapper {
+    padding: 24px;
+    border-radius: 16px;
   }
 
   .blogdetail-comments {
-    margin-top: 32px;
+    margin-top: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .blogdetail-container {
+    padding: 20px 16px;
+  }
+
+  .blogdetail-wrapper {
+    padding: 20px;
+    border-radius: 12px;
   }
 }

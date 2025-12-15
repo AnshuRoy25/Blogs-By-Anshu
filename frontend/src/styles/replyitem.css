@@ -1,7 +1,7 @@
 /* frontend/src/styles/replyitem.css */
 
 .reply-item {
-  background-color: #4a4a4a;
+  background-color: #333333; /* Darker shade for replies */
   border-radius: 12px;
   padding: 16px;
 }
@@ -17,7 +17,7 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background-color: #666;
+  background-color: #444444;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -50,7 +50,7 @@
 }
 
 .reply-text {
-  background-color: #2f2f2f;
+  background-color: #4a4a4a;
   color: #d0d0d0;
   padding: 14px;
   border-radius: 10px;

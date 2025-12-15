@@ -119,6 +119,7 @@ function BlogDetail() {
 
   return (
     <div className="blogdetail-container">
+      <div className="blogdetail-wrapper">
         <BlogContent
         blog={blog}
         onLike={handleLike}
@@ -133,6 +134,7 @@ function BlogDetail() {
             onOpenLikers={handleOpenLikers}  // ← pass down
         />
         </div>
+      </div>
 
         <LikersModal
         open={likersOpen}
@@ -141,7 +143,6 @@ function BlogDetail() {
         />
     </div>
     );
-
 }
 
 export default BlogDetail;
