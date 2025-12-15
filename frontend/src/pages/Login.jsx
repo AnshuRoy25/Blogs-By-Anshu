@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 import "../styles/login.css";
 import { useAuth } from "../context/AuthContext";
 import { API_BASE_URL } from "../config/api";
-
+import { IoPerson, IoEye, IoEyeOff } from "react-icons/io5";
 
 function Login() {
   const { login } = useAuth(); 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -25,7 +26,6 @@ function Login() {
     setLoading(true);
 
     try {
-      // Call your backend login API
       const response = await fetch(`${API_BASE_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -35,13 +35,10 @@ function Login() {
       const data = await response.json();
 
       if (response.ok) {
-        // Use AuthContext to store auth
         login(data.token, data.user);
         navigate("/");
       } else {
-        // Error from server
         setError(data.error || data.message || "Login failed");
-
       }
     } catch (err) {
       console.error("Login error:", err);
@@ -59,21 +56,37 @@ function Login() {
         {error && <div className="error-message">{error}</div>}
 
         <form onSubmit={handleLogin}>
-          <input
-            type="text"
-            placeholder="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            disabled={loading}
-          />
+          <div className="input-wrapper">
+            <input
+              type="text"
+              placeholder="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              disabled={loading}
+            />
+            <IoPerson className="input-icon" size={20} />
+          </div>
 
-          <input
-            type="password"
-            placeholder="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            disabled={loading}
-          />
+          <div className="input-wrapper">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={loading}
+            />
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? (
+                <IoEyeOff size={20} />
+              ) : (
+                <IoEye size={20} />
+              )}
+            </button>
+          </div>
 
           <a href="#" className="forgot-password">
             forget password?

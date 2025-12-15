@@ -30,11 +30,13 @@
 }
 
 .sidebar-title {
-  font-size: 16px;
-  font-weight: 400;
+  font-size: 20px;
+  font-weight: 600;
   color: #ffffff;
   text-align: center;
-  line-height: 1.3;
+  line-height: 1.4;
+  letter-spacing: 0.3px;
+  margin-top: 4px;
 }
 
 .sidebar-socials {
@@ -43,25 +45,28 @@
   margin-top: 8px;
 }
 
+.sidebar-socials a {
+  text-decoration: none;
+}
+
 .sidebar-icon-btn {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   background-color: transparent;
   border: none;
   border-radius: 50%;
   color: #ffffff;
-  font-size: 12px;
-  font-weight: 600;
   cursor: pointer;
   padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, color 0.2s;
 }
 
 .sidebar-icon-btn:hover {
   background-color: #2a2a2a;
+  color: #f0f0f0;
 }
 
 .sidebar-icon-btn:focus {
@@ -103,11 +108,12 @@
 }
 
 .sidebar-nav-icon {
-  font-size: 18px;
-  width: 20px;
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 /* Auth section - at bottom, above user button */
@@ -120,22 +126,30 @@
 .sidebar-auth-btn {
   flex: 1;
   padding: 10px 16px;
-  background-color: #d9d9d9;
-  border: none;
+  background-color: transparent;
+  border: 1px solid #4a4a4a;
   border-radius: 24px;
-  color: #000000;
+  color: #ffffff;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, border-color 0.2s;
 }
 
 .sidebar-auth-btn:hover {
-  background-color: #e5e5e5;
+  background-color: #2a2a2a;
+  border-color: #666666;
 }
 
 .sidebar-auth-btn:focus {
   outline: none;
+}
+
+/* Active state for auth buttons (when on login/register page) */
+.sidebar-auth-btn.active {
+  background-color: #d9d9d9;
+  color: #000000;
+  border-color: #d9d9d9;
 }
 
 /* User button - at very bottom */
@@ -161,4 +175,31 @@
 
 .sidebar-user-btn:focus {
   outline: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 240px;
+    padding: 20px 12px;
+  }
+
+  .sidebar-avatar {
+    width: 64px;
+    height: 64px;
+  }
+
+  .sidebar-title {
+    font-size: 14px;
+  }
+
+  .sidebar-icon-btn {
+    width: 32px;
+    height: 32px;
+  }
+
+  .sidebar-nav-btn {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
 }

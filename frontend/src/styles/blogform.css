@@ -1,0 +1,178 @@
+/* frontend/src/styles/blogform.css */
+
+.blogform-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.blogform-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+/* Input fields styling */
+.blogform-input {
+  width: 100%;
+  padding: 16px 20px;
+  background-color: #3d3d3d;
+  border: 1px solid #4a4a4a;
+  border-radius: 12px;
+  font-size: 15px;
+  color: #ffffff;
+  font-family: inherit;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.blogform-input::placeholder {
+  color: #999999;
+  opacity: 1;
+}
+
+.blogform-input:focus {
+  border-color: #666666;
+  background-color: #424242;
+}
+
+/* Textarea (Body field) styling */
+.blogform-textarea {
+  width: 100%;
+  min-height: 400px;
+  padding: 20px;
+  background-color: #3d3d3d;
+  border: 1px solid #4a4a4a;
+  border-radius: 12px;
+  font-size: 15px;
+  color: #ffffff;
+  font-family: inherit;
+  line-height: 1.6;
+  outline: none;
+  box-sizing: border-box;
+  resize: vertical;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.blogform-textarea::placeholder {
+  color: #999999;
+  opacity: 1;
+}
+
+.blogform-textarea:focus {
+  border-color: #666666;
+  background-color: #424242;
+}
+
+/* Action buttons container */
+.blogform-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+/* Button base styles */
+.blogform-btn {
+  padding: 12px 32px;
+  border: none;
+  border-radius: 24px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  outline: none;
+  font-family: inherit;
+}
+
+/* Secondary button (Save Draft / Move To Draft) */
+.blogform-btn.secondary {
+  background-color: transparent;
+  color: #d0d0d0;
+  border: 1px solid #666666;
+}
+
+.blogform-btn.secondary:hover {
+  background-color: #2a2a2a;
+  border-color: #777777;
+}
+
+.blogform-btn.secondary:active {
+  background-color: #333333;
+}
+
+/* Primary button (Publish / Save) */
+.blogform-btn.primary {
+  background-color: #e0e0e0;
+  color: #1a1a1a;
+  border: 1px solid #e0e0e0;
+}
+
+.blogform-btn.primary:hover {
+  background-color: #f0f0f0;
+  border-color: #f0f0f0;
+}
+
+.blogform-btn.primary:active {
+  background-color: #d0d0d0;
+  border-color: #d0d0d0;
+}
+
+/* Disabled state for buttons */
+.blogform-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .blogform-container {
+    padding: 0;
+  }
+
+  .blogform-fields {
+    gap: 12px;
+  }
+
+  .blogform-input {
+    padding: 14px 16px;
+    font-size: 14px;
+  }
+
+  .blogform-textarea {
+    min-height: 300px;
+    padding: 16px;
+    font-size: 14px;
+  }
+
+  .blogform-actions {
+    flex-direction: column-reverse;
+    gap: 10px;
+  }
+
+  .blogform-btn {
+    width: 100%;
+    padding: 14px 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .blogform-input {
+    padding: 12px 14px;
+    font-size: 13px;
+  }
+
+  .blogform-textarea {
+    min-height: 250px;
+    padding: 14px;
+    font-size: 13px;
+  }
+
+  .blogform-btn {
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+}

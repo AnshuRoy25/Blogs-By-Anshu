@@ -3,12 +3,15 @@ import { useNavigate } from "react-router-dom";
 import "../styles/register.css";
 import { useAuth } from "../context/AuthContext";
 import { API_BASE_URL } from "../config/api";
+import { IoPerson, IoEye, IoEyeOff, IoCheckmarkCircle } from "react-icons/io5";
 
 function Register() {
   const { login } = useAuth(); 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -17,7 +20,6 @@ function Register() {
     e.preventDefault();
     setError("");
 
-    // Validation
     if (!username || !password || !confirmPassword) {
       setError("Please fill in all fields");
       return;
@@ -36,7 +38,6 @@ function Register() {
     setLoading(true);
 
     try {
-      // Call your backend register API
       const response = await fetch(`${API_BASE_URL}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -46,13 +47,10 @@ function Register() {
       const data = await response.json();
 
       if (response.ok) {
-        // Store auth in context
         login(data.token, data.user);
         navigate("/");
       } else {
-        // Error from server (username exists, etc)
         setError(data.error || data.message || "Registration failed");
-
       }
     } catch (err) {
       console.error("Register error:", err);
@@ -70,29 +68,58 @@ function Register() {
         {error && <div className="error-message">{error}</div>}
 
         <form onSubmit={handleRegister}>
-          <input
-            type="text"
-            placeholder="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            disabled={loading}
-          />
+          <div className="input-wrapper">
+            <input
+              type="text"
+              placeholder="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              disabled={loading}
+            />
+            <IoPerson className="input-icon" size={20} />
+          </div>
 
-          <input
-            type="password"
-            placeholder="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            disabled={loading}
-          />
+          <div className="input-wrapper">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={loading}
+            />
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? (
+                <IoEyeOff size={20} />
+              ) : (
+                <IoEye size={20} />
+              )}
+            </button>
+          </div>
 
-          <input
-            type="password"
-            placeholder="confirm password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            disabled={loading}
-          />
+          <div className="input-wrapper">
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              placeholder="confirm password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              disabled={loading}
+            />
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            >
+              {showConfirmPassword ? (
+                <IoEyeOff size={20} />
+              ) : (
+                <IoCheckmarkCircle size={20} />
+              )}
+            </button>
+          </div>
 
           <button type="submit" disabled={loading}>
             {loading ? "Registering..." : "Register"}

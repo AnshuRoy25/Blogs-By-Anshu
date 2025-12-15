@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { IoSearch } from 'react-icons/io5';
 
 function SearchBar({ onSearch }) {
   const [searchTerm, setSearchTerm] = useState('');
@@ -17,7 +18,9 @@ function SearchBar({ onSearch }) {
   return (
     <form onSubmit={handleSubmit}>
       {/* Search icon */}
-      <span className="search-icon">🔍</span>
+      <span className="search-icon">
+        <IoSearch size={20} />
+      </span>
       
       <input
         value={searchTerm}
