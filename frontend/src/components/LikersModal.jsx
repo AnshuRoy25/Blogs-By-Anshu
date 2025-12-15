@@ -1,4 +1,5 @@
 import React from "react";
+import { IoPerson } from "react-icons/io5";
 import "../styles/likersmodal.css";
 
 function LikersModal({ open, onClose, users = [] }) {
@@ -21,7 +22,9 @@ function LikersModal({ open, onClose, users = [] }) {
             <ul className="likers-list">
               {users.map((u) => (
                 <li key={u._id} className="liker-row">
-                  <span className="liker-icon">👤</span>
+                  <span className="liker-icon">
+                    <IoPerson size={20} />
+                  </span>
                   <span className="liker-name">{u.username}</span>
                 </li>
               ))}

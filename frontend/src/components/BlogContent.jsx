@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { IoArrowBack, IoHeart, IoShareSocial } from 'react-icons/io5';
 import '../styles/blogcontent.css';
 
 function BlogContent({ blog, onLike, onShare, onOpenLikers }) {
@@ -14,7 +15,7 @@ function BlogContent({ blog, onLike, onShare, onOpenLikers }) {
     <div className="blog-content">
       {/* Back arrow */}
       <button className="blog-back-btn" onClick={() => navigate(-1)}>
-        ←
+        <IoArrowBack size={24} />
       </button>
 
       {/* Title */}
@@ -42,7 +43,7 @@ function BlogContent({ blog, onLike, onShare, onOpenLikers }) {
       {/* Like and share buttons */}
       <div className="blog-actions">
         <button className="blog-action-btn like-btn" onClick={onLike}>
-          ❤️
+          <IoHeart size={22} />
         </button>
 
         <span
@@ -53,7 +54,7 @@ function BlogContent({ blog, onLike, onShare, onOpenLikers }) {
         </span>
 
         <button className="blog-action-btn share-btn" onClick={onShare}>
-          🔗
+          <IoShareSocial size={22} />
         </button>
       </div>
     </div>

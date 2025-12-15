@@ -1,6 +1,7 @@
 // src/components/ReplyItem.jsx
 import React from "react";
 import { useAuth } from "../context/AuthContext";
+import { IoPerson, IoHeart } from "react-icons/io5";
 import "../styles/replyitem.css";
 
 function ReplyItem({ reply, onDeleteReply, onLikeReply, onOpenLikers }) {
@@ -17,7 +18,9 @@ function ReplyItem({ reply, onDeleteReply, onLikeReply, onOpenLikers }) {
   return (
     <div className="reply-item">
       <div className="reply-header">
-        <div className="reply-avatar">👤</div>
+        <div className="reply-avatar">
+          <IoPerson size={18} />
+        </div>
         <span className="reply-author">
           {reply.userId?.username || "Admin"}
         </span>
@@ -36,7 +39,7 @@ function ReplyItem({ reply, onDeleteReply, onLikeReply, onOpenLikers }) {
 
       <div className="reply-actions">
         <button className="reply-like-btn" onClick={handleLike}>
-          ❤️
+          <IoHeart size={16} />
         </button>
         <span
           className="reply-like-count"

@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { IoPerson, IoHeart, IoSend } from "react-icons/io5";
 import "../styles/commentitem.css";
 import ReplyItem from "./ReplyItem";
 
@@ -39,7 +40,9 @@ function CommentItem({
   return (
     <div className="comment-item">
       <div className="comment-header">
-        <div className="comment-avatar">👤</div>
+        <div className="comment-avatar">
+          <IoPerson size={20} />
+        </div>
         <span className="comment-author">
           {comment.userId?.username || "Anonymous"}
         </span>
@@ -67,7 +70,7 @@ function CommentItem({
         )}
 
         <button className="comment-like-btn" onClick={handleLikeComment}>
-          ❤️
+          <IoHeart size={18} />
         </button>
 
         <span
@@ -89,7 +92,7 @@ function CommentItem({
             autoFocus
           />
           <button type="submit" className="reply-send-btn">
-            Send
+            <IoSend size={16} />
           </button>
         </form>
       )}

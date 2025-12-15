@@ -12,9 +12,8 @@
   background-color: transparent;
   border: none;
   color: #e0e0e0;
-  font-size: 2rem;
   cursor: pointer;
-  padding: 0;
+  padding: 8px;
   margin-bottom: 24px;
   display: inline-flex;
   align-items: center;
@@ -22,11 +21,12 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, color 0.2s;
 }
 
 .blog-back-btn:hover {
   background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
 }
 
 /* Title */
@@ -101,28 +101,41 @@
 .blog-action-btn {
   background-color: transparent;
   border: none;
-  font-size: 1.5rem;
+  color: #e0e0e0;
   cursor: pointer;
-  padding: 8px 12px;
+  padding: 10px 12px;
   border-radius: 8px;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .blog-action-btn:hover {
   background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.blog-action-btn.like-btn:hover {
+  color: #ff4d4d;
+}
+
+.blog-action-btn.share-btn:hover {
+  color: #4d9fff;
 }
 
 .blog-likes {
   color: #b0b0b0;
   font-size: 0.95rem;
   cursor: pointer;
-  padding: 4px 8px;
+  padding: 6px 12px;
   border-radius: 6px;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, color 0.2s;
 }
 
 .blog-likes:hover {
   background-color: rgba(255, 255, 255, 0.05);
+  color: #e0e0e0;
 }
 
 /* Responsive */
